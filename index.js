@@ -8,9 +8,8 @@ const fs = require('fs');
 const imagemin = require('gulp-imagemin');
 const imageminJpegoptim = require('imagemin-jpegoptim');
 const colors = require('colors');
-let autoPrefixer = require('./lib/autoprefixer.js');
-
-
+let extend = require('./lib/extend')
+let autoPrefixer = require('./lib/autoprefixer');
 //define path as const in your gulpfile
 
 const paths = {
@@ -22,14 +21,20 @@ const paths = {
         
 // Global Filename Variable
 let changedFile = '';
+let prefixes = ['lll'];
+
     
 // Consts
 const PLUGIN_NAME = 'gulp-rose';
 
 class gulpRose {
-    constructor(path) {
-        this.path = path
+    constructor(path, options) {
+        this.path = path;
+        this.defaults = {
+            prefix:false
+        };
         this.init(path);
+        this.settings = extend({}, this.defaults, options);
     }
 
     init(path){
@@ -42,7 +47,7 @@ class gulpRose {
     }
 
     optimizeImage(file, fileName) {
-        let updateImage = new autoPrefixer(file, fileName);
+        let updateImage = new autoPrefixer(file, fileName, prefixes);
         updateImage.sendFileName();
         updateImage.sendFileName().then( value => {
             gulp.src(value)
@@ -81,7 +86,10 @@ class gulpRose {
     }
 }
 
-module.exports = gulpRose
+module.exports = gulpRose;
+
+
+let work = new gulpRose(paths.watch.src);
 
 
 
