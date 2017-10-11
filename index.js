@@ -103,7 +103,6 @@ class gulpRose {
 
 module.exports = gulpRose;
 
-let h = new gulpRose(paths.watch.src);
 
 
 
