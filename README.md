@@ -1,6 +1,8 @@
 How to use in your project
 
-let gulpRose = require(gulp-rose);
+define prefixes
+
+let gulpRose = require('gulp-rose');
 
 ```
 const paths = {
