@@ -10,6 +10,7 @@ const imageminJpegoptim = require('imagemin-jpegoptim');
 const colors = require('colors');
 let extend = require('./lib/extend')
 let autoPrefixer = require('./lib/autoprefixer');
+let junk = require('junk');
 //define path as const in your gulpfile
 
 const paths = {
@@ -23,7 +24,6 @@ const paths = {
 let changedFile = '';
 let prefixes = ['lll'];
 
-    
 // Consts
 const PLUGIN_NAME = 'gulp-rose';
 
@@ -70,7 +70,7 @@ class gulpRose {
     gatherImages(path){
         globby([path]).then(paths => {
             for(let i = 0; i < paths.length; i++) {
-                let currentPath = paths[i];
+                let currentPath = paths[i].filter(junk.not);
                 fs.watch(paths[i], (eventType, filename) => {
                     console.log(`event type is: ${eventType}`);
                     if (filename) {
