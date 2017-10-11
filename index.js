@@ -9,7 +9,7 @@ const imagemin = require('gulp-imagemin');
 const imageminJpegoptim = require('imagemin-jpegoptim');
 const colors = require('colors');
 let extend = require('./lib/extend')
-let autoPrefixer = require('./lib/autoprefixer');
+let prefixImageFromList = require('./lib/prefixImageFromList');
 let junk = require('junk');
 //define path as const in your gulpfile
 
@@ -70,7 +70,7 @@ class gulpRose {
     gatherImages(path){
         globby([path]).then(paths => {
             for(let i = 0; i < paths.length; i++) {
-                let currentPath = paths[i].filter(junk.not);
+                let currentPath = paths[i];
                 fs.watch(paths[i], (eventType, filename) => {
                     console.log(`event type is: ${eventType}`);
                     if (filename) {
@@ -89,7 +89,6 @@ class gulpRose {
 module.exports = gulpRose;
 
 
-let work = new gulpRose(paths.watch.src);
 
 
 
