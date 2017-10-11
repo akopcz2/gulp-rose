@@ -47,10 +47,27 @@ class gulpRose {
     }
 
     optimizeImage(file, fileName) {
-        let updateImage = new autoPrefixer(file, fileName, prefixes);
-        updateImage.sendFileName();
-        updateImage.sendFileName().then( value => {
-            gulp.src(value)
+        if(this.prefix){
+            let updateImage = new autoPrefixer(file, fileName, prefixes);
+            updateImage.sendFileName();
+            updateImage.sendFileName().then( value => {
+                gulp.src(value)
+                .pipe(imagemin([
+                    imagemin.gifsicle(),
+                    imageminJpegoptim({
+                        stripAll: false,
+                        stripIcc: false
+                    }),
+                    imagemin.optipng({ optimizationLevel: 7 }),
+                    imagemin.svgo()
+                ], {
+                    verbose: true
+                }));
+            }, reason => {
+                console.log(reason); // Error!
+            });
+        } else{
+            gulp.src(file)
             .pipe(imagemin([
                 imagemin.gifsicle(),
                 imageminJpegoptim({
@@ -62,9 +79,7 @@ class gulpRose {
             ], {
                 verbose: true
             }));
-        }, reason => {
-            console.log(reason); // Error!
-        });
+        }
     }
 
     gatherImages(path){
@@ -88,6 +103,7 @@ class gulpRose {
 
 module.exports = gulpRose;
 
+let h = new gulpRose(paths.watch.src);
 
 
 
