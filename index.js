@@ -31,19 +31,15 @@ class gulpRose {
     constructor(path, options) {
         this.path = path;
         this.defaults = {
+            path: '/public/static/images',
             prefix:false
         };
-        this.init(path);
         this.settings = extend({}, this.defaults, options);
+        this.init(path);
     }
 
     init(path){
-        if(path){
-            this.gatherImages(path);
-        }
-        else{
-            console.log(colors.rainbow(PLUGIN_NAME) + ' Threw an error' + colors.red(' MISSING IMAGE PATH'));
-        }
+        let hasPath = (path) ? this.gatherImages(path) :  console.log(PLUGIN_NAME + ' Caused an error. Missing a path. Please pass a path to the plugin');
     }
 
     optimizeImage(file, fileName) {
@@ -58,7 +54,7 @@ class gulpRose {
                         stripAll: false,
                         stripIcc: false
                     }),
-                    imagemin.optipng({ optimizationLevel: 7 }),
+                    imagemin.optipng(),
                     imagemin.svgo()
                 ], {
                     verbose: true
@@ -101,7 +97,8 @@ class gulpRose {
     }
 }
 
-module.exports = gulpRose;
+module.exports = new gulpRose();
+
 
 
 
